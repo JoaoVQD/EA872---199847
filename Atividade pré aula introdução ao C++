@@ -1,0 +1,59 @@
+
+#include <iostream>
+using namespace std;
+class MinhaClasse {
+
+
+
+  public:
+int x,y,z;
+
+    void cube_new(int a, int b, int c);
+    void coord_new(int a, int b);
+
+
+};
+
+void cube_print_volume(int a, int b, int c){
+
+
+std::cout << a*b*c;
+
+
+}
+
+void MinhaClasse::cube_new(int a, int b, int c) {
+
+  MinhaClasse *c1 = new MinhaClasse();
+  c1->x=a;
+  c1->y=b;
+  c1->z=c;
+  cube_print_volume(c1->x,c1->y,c1->z);
+
+
+}
+
+void MinhaClasse::coord_new(int a, int b){
+MinhaClasse *c2 = new MinhaClasse();
+c2->x=a;
+c2->y=b;
+
+}
+
+
+
+
+void escopo() {
+    MinhaClasse *c2 = new MinhaClasse();
+    MinhaClasse *c1 = new MinhaClasse();
+    c2->coord_new(50,10);
+    c1->cube_new(10,20,30);
+
+}
+
+int main()
+{
+
+  escopo();
+  return 0;
+}
