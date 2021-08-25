@@ -1,0 +1,100 @@
+#include <iostream>
+#include <stdio.h>
+#include<math.h>
+#include<stdlib.h>
+#include<complex>
+using namespace std;
+
+
+//Model: Armazenar dados
+class Dados {
+
+public:
+    float k, m, b, Vo, Xo,Xantes, Xatual,Vantes,Fi;
+
+ set_parametros();
+ friend class Calculo;
+
+
+
+
+
+};
+
+Dados::set_parametros(){
+std::cout << "Digite o valor da constante de mola K:" "" << std::endl;
+scanf("%f",&this->k);
+std::cout << "Digite o valor da constante de amortecimento b:" "" << std::endl;
+scanf("%f",&this->b);
+std::cout << "Digite o valor da massa m:" "" << std::endl;
+scanf("%f",&this->m);
+std::cout << "Digite o valor da velocidade inicial Vo:" "" << std::endl;
+scanf("%f",&this->Vo);
+std::cout << "Digite o valor da posicao inicial Xo:" "" << std::endl;
+scanf("%f",&this->Xo);
+std::cout << "Digite o valor da Forca inicial Fi:" "" << std::endl;
+scanf("%f",&this->Fi);
+printf("\n");
+Xantes=Xo;
+Vantes=Vo;
+//system("cls");
+
+
+}
+
+
+
+
+//Controller: Processar os dados
+class Calculo{
+
+public:
+
+
+     void calc(float k, float m, float b, float Xo, float Vo,float Fi);
+
+};
+
+
+
+void Calculo::calc(float k, float m, float b, float Xo,float Vo,float Fi){
+float aux1,aux2,aux3,C1,C2;
+
+int i=0;
+float x,v,a;
+x=Xo;
+v=Vo;
+a=0;
+float t=0.1;
+
+aux1=((k*t*t)/(2*m))+((b*t)/m)+1;
+C2=Xo;
+C1=Vo+((b*Xo)/m);
+printf("n || x[n] || v[n] || a[n] \n");
+
+while(i<30){
+ x=((((Fi*t*t)/(2*m))+(C1*t)+C2)/(aux1))+x;
+ v=((-k*x*t)/(m)-((b*x)/m)+((Fi*t)/m)+C1)+v;
+ a=(((-k*x)/m)-((b*v)/m)+(Fi/m))+a;
+
+
+
+
+ printf("%d || %f || %f || %f \n",i,x,v,a);
+ i++;
+}
+
+}
+
+
+
+int main()
+{
+ Dados *Sistema1=new Dados;
+ Calculo *Equacao1=new Calculo;
+Sistema1->set_parametros();
+Equacao1->calc(Sistema1->k, Sistema1->m, Sistema1->b, Sistema1->Xo, Sistema1->Vo,Sistema1->Fi);
+
+
+    return 0;
+}
