@@ -1,0 +1,125 @@
+#include <memory>
+#include <iostream>
+
+
+/*
+Adicionei um modelo de mma com base nos codigos mma e mvc desacoplado do professor, qualquer duvida ou erro só me falar
+
+*/
+
+class Model
+{
+  private:
+   float data;
+   float m;
+   float k;
+   float b;
+   float x0;
+   float v0;
+   float dt;
+   float a, f, x_atual, v_atual, x_anterior;
+
+
+public:
+    Model();
+    void set_posicao(float new_data);
+    void set_velocidade(float new_data2);
+    float get_posicao();
+    float get_velocidade();
+    void set_forca(float new_data3);
+    float get_forca();
+    float get_k();
+    float get_m();
+    float get_b();
+    float get_dt();
+    float get_a();
+    void set_a(float new_data4);
+
+};
+
+Model::Model() {
+
+    m=1;
+    k=1;
+    b=0;
+    x0=1;
+    v0=0;
+    dt=0.1;
+    x_atual=x0;
+    v_atual=v0;
+    }
+void Model::set_posicao(float new_data) { x_atual = new_data; }
+void Model::set_velocidade(float new_data2) { v_atual = new_data2; }
+float Model::get_posicao() { return x_atual; }
+float Model::get_velocidade() { return v_atual; }
+void Model::set_forca(float new_data3) { f = new_data3; }
+float Model::get_forca() { return f; }
+float Model::get_k() { return k; }
+float Model::get_m() { return m; }
+float Model::get_b() { return b; }
+float Model::get_dt() { return dt; }
+float Model::get_a() { return a; }
+void Model::set_a(float new_data4){a=new_data4;}
+
+class View
+{
+  private:
+    Model &model;
+
+  public:
+    View(Model &model);
+    void render();
+};
+
+View::View(Model &model):
+  model(model)
+{  }
+
+void View::render() {
+  std::cout << "Posicao: " << model.get_posicao() << std::endl;
+}
+
+class Controller
+{
+  private:
+    Model &model;
+    View &view;
+
+  public:
+    Controller(Model &model, View &view);
+    void update();
+};
+
+Controller::Controller(Model &model, View &view) :
+  // Lista de inicialiacao (initialization list)
+  model(model),
+  view(view)
+{
+
+
+
+}
+
+void Controller::update() {
+
+model.set_forca(-model.get_posicao()*model.get_k() -model.get_b()*model.get_velocidade());
+model.set_a((model.get_forca())/(model.get_m()));
+model.set_velocidade(model.get_velocidade() +model.get_a()*model.get_dt());
+model.set_posicao(model.get_posicao() +model.get_velocidade()*model.get_dt());
+
+
+}
+
+int main()
+{
+  Model model = Model();
+  View view = View(model);
+  Controller controller = Controller(model, view);
+  for (int i=0; i<100; i++)
+  {
+    controller.update();
+    view.render();
+  }
+
+  return 0;
+}
